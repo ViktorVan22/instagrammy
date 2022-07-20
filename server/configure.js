@@ -10,6 +10,9 @@ const errorHandler = require("errorhandler");
 const routes = require("./routes");
 
 module.exports = function (app) {
+  app.engine("handlebars", exphbs());
+  app.set("view engine", "handlebars");
+
   app.use(morgan("dev"));
   app.use(bodyParser.urlencoded({ extended: true }));
   app.use(bodyParser.json());
@@ -22,6 +25,5 @@ module.exports = function (app) {
   }
 
   routes(app);
-
   return app;
 };

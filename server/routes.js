@@ -14,6 +14,6 @@ module.exports = function (app) {
   router.post("/images/:image_id/like", image.like);
   router.post("/images/:image_id/comment", image.comment);
 
-  // 使用路由中间件
+  // 注册路由中间件
   app.use(router);
 };
