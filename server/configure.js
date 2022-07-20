@@ -7,6 +7,8 @@ const morgan = require("morgan");
 const methodOverride = require("method-override");
 const errorHandler = require("errorhandler");
 
+const routes = require("./routes");
+
 module.exports = function (app) {
   app.use(morgan("dev"));
   app.use(bodyParser.urlencoded({ extended: true }));
@@ -18,6 +20,8 @@ module.exports = function (app) {
   if (app.get("env") === "development") {
     app.use(errorHandler());
   }
+
+  routes(app);
 
   return app;
 };
