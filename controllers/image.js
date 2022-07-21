@@ -1,3 +1,6 @@
+const fs = require("fs");
+const path = require("path");
+
 module.exports = {
   index: (req, res) => {
     const viewModel = {
@@ -30,7 +33,22 @@ module.exports = {
     res.render("image", viewModel);
   },
   create: (req, res) => {
-    res.send("The image: create POST controller");
+    let tempPath = req.file.path;
+    let imgUrl = req.file.filename;
+    let ext = path.extname(req.file.originalname).toLowerCase();
+    let targetPath = path.resolve("./public/upload" + imgUrl + ext);
+
+    if (ext === ".png" || ext === ".jpg" || ext === ".jpeg" || ext === ".gif") {
+      fs.rename(tempPath, targetPath, error => {
+        if (error) throw error;
+        res.redirect("/images/" + imgUrl);
+      });
+    } else {
+      fs.unlink(tempPath, error => {
+        if (error) throw error;
+        res.json(500, { error: "只允许上传图片文件。" });
+      });
+    }
   },
   like: (req, res) => {
     res.send("The image: like POST controller");
